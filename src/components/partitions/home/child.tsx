@@ -1,42 +1,24 @@
 import { Button } from "@/components/ui/button";
-import {
-  useGetUser2,
-  useUpdateUser,
-  useUpdateUser2,
-} from "@/queries/user.query";
+import { useUpdateUser } from "@/queries/user.query";
 import userStore from "@/stores/user.store";
-import React, { useState } from "react";
+import React from "react";
 
 type Props = {
   isLoading: boolean;
 };
 
 export default function Child({ isLoading }: Props) {
-  // const user = userStore((state) => state.user);
+  const user = userStore((state) => state.user);
 
-  const { user } = useGetUser2({ id: 1 });
-  console.log(user, "user");
+  const updateUser = useUpdateUser();
 
-  // const updateUser = useUpdateUser();
-
-  const [loading, setLoading] = useState(false);
-
-  async function handleUpdate() {
+  function handleUpdate() {
     if (!user) return;
-    // updateUser.mutate({
-    //   ...user,
-    //   id: 1,
-    //   email: "leannegraham@april.biz",
-    // });
-    setLoading(true);
-    await useUpdateUser2({
-      data: {
-        ...user,
-        id: 1,
-        email: "leannegraham@april.biz",
-      },
+    updateUser.mutate({
+      ...user,
+      id: 1,
+      email: "leannegraham@april.biz",
     });
-    setLoading(false);
   }
 
   return (
@@ -52,7 +34,11 @@ export default function Child({ isLoading }: Props) {
               <p>{`name : ${user?.name}`}</p>
               <p>{`email : ${user?.email}`}</p>
             </div>
-            <Button size={"sm"} onClick={handleUpdate} isLoading={loading}>
+            <Button
+              size={"sm"}
+              onClick={handleUpdate}
+              isLoading={updateUser.isLoading}
+            >
               Update Email
             </Button>
           </div>

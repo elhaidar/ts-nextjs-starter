@@ -2,14 +2,13 @@
 
 import userStore from "@/stores/user.store";
 import Child from "./child";
-import { useGetUser, useGetUser2 } from "@/queries/user.query";
+import { useGetUser } from "@/queries/user.query";
 import OtherChild from "./other-child";
 
 export default function HomePartition() {
-  // const { user, setUser } = userStore();
+  const user = userStore((state) => state.user);
 
-  // const { isLoading } = useGetUser({ id: 1 });
-  const { user, isLoading } = useGetUser2({ id: 1 });
+  const { isLoading } = useGetUser({ id: 1 });
 
   return (
     <div className="border-[1px] w-full h-[80vh] bg-slate-800 p-4 flex flex-col relative space-y-32">

@@ -49,37 +49,3 @@ export function useUpdateUser() {
     }
   );
 }
-
-const fetcher = (...args: any) => fetch(...args).then((res) => res.json());
-
-export function useGetUser2({ id }: { id: number }) {
-  const { data, error, isLoading } = useSWR(
-    `https://jsonplaceholder.typicode.com/users/${id}`,
-    fetcher
-  );
-  return {
-    user: data,
-    isLoading,
-    isError: error,
-  };
-}
-
-export async function useUpdateUser2({ data }: { data: UserProps }) {
-  console.log(data, "data");
-  const res = await api.patch(
-    `https://jsonplaceholder.typicode.com/users/${data.id}`,
-    data
-  );
-  const json = res.data;
-  await mutate(`https://jsonplaceholder.typicode.com/users/${data.id}`, null, {
-    populateCache: (_, data) => {
-      console.log(json, "populate cache json");
-      console.log(data, "populate cache data");
-      return {
-        ...data,
-        data: json,
-      };
-    },
-    revalidate: false,
-  });
-}
